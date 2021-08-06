@@ -79,35 +79,6 @@
         </v-form>
       </div>
 
-      <!-- This is responsible for Renaming Deparments-->
-      <div v-if="departments_rename_function">
-        <v-form ref="form" v-model="valid" lazy-validation>
-          <v-row justify="right" class="text-right">
-            <v-col>
-              <v-btn text large @click="departments_rename_function = false">
-                <v-icon color="blue">mdi-close</v-icon>Close
-              </v-btn>
-            </v-col>
-          </v-row>
-          <v-card-subtitle>{{ department_rename_name_2 }}</v-card-subtitle>
-          <v-container>
-            <v-text-field
-              v-model="department_rename_name"
-              :rules="nameRules"
-              label="Rename Department Name"
-              required
-            ></v-text-field>
-
-            <v-card-actions>
-              <v-btn color="blue" @click="handleRenamingDepatments()">
-                Rename Department
-              </v-btn>
-            </v-card-actions>
-
-            <p v-text="errors.department"></p>
-          </v-container>
-        </v-form>
-      </div>
 
       <!-- This is responsible for Adding Departments -->
       <div v-if="departments_function">
@@ -190,7 +161,10 @@
         height="300"
       >
         <template v-slot:default="{ item }">
-          <v-list-item>
+          <v-list-item 
+                :to="/DepartmentInformation/ + item.id"
+          
+          >
             <v-list-item-content>
               <v-list-item-title>{{ item.department_name }}</v-list-item-title>
             </v-list-item-content>
@@ -230,36 +204,9 @@
                   </v-btn>
                 </v-col>
                 <v-col>
-                  <v-btn
-                    depressed
-                    small
-                    @click="
-                      (dialog_for_department_view = true),
-                        (department_id_to_view = item.id),
-                        get_depertment_HOD_view(),
-                        (departments_changing_hod_function = false)
-                    "
-                  >
-                    View
-
-                    <v-icon color="orange darken-4" right>
-                      mdi-open-in-new
-                    </v-icon>
-                  </v-btn>
                 </v-col>
                 <v-col>
-                  <v-btn
-                    depressed
-                    small
-                    @click="
-                      handleDepartmentDelete(item.id),
-                        (departments_changing_hod_function = false)
-                    "
-                  >
-                    Delete
 
-                    <v-icon color="orange darken-4" right> mdi-delete </v-icon>
-                  </v-btn>
                 </v-col>
               </v-row>
             </v-list-item-action>
@@ -386,27 +333,7 @@ export default {
       this.$refs.form.validate();
     },
 
-    // to get departments and HOD View
-    get_depertment_HOD_view() {
-      this.$http.get("/sanctum/csrf-cookie").then((res) => {
-        this.$http
-          .get("/api/hodAndDepartments/" + this.department_id_to_view)
-          .then((response) => {
-            this.department_data = response.data;
-            this.department_name_view = this.department_data.data[0].name;
-            this.department_hod_view = this.department_data.data[0].hod;
-            this.department_department_name_view =
-              this.department_data.data[0].department_name;
-            this.department_created_at_view =
-              this.department_data.data[0].created_at;
-            this.loading_items = false;
-            console.log(res);
-          })
-          .catch((errors) => {
-            this.errors = errors.response.data.errors;
-          });
-      });
-    },
+
 
     // for retrieving users
     getUsers(idForHOD) {
@@ -466,42 +393,6 @@ export default {
       }
     },
 
-    // for deleting Departments
-    handleDepartmentDelete(idfordelete) {
-      this.dialogLoading = true;
-      this.department_id_to_delete = idfordelete;
-
-      this.$http.get("/sanctum/csrf-cookie").then((res) => {
-        this.$http
-          .delete("/api/departments/" + this.department_id_to_delete)
-          .then((response) => {
-            console.log(response);
-
-            this.message = response.data.message;
-            this.dialogLoading = false;
-            this.snackbar = true;
-            this.componentKey += 1;
-            console.log(res);
-            this.loading_items = true;
-          })
-          .catch((errors) => {
-            this.errors = errors.response.data.errors;
-            this.dialogLoading = false;
-          })
-          .then(() => {
-            this.$http
-              .get("/api/departments")
-              .then((response2) => {
-                this.department = response2.data;
-                this.loading_items = false;
-              })
-              .catch((errors) => {
-                this.errors = errors.response.data.errors;
-              });
-          });
-      });
-    },
-
     // for renaming departments
 
     get_depertment_id(id) {
@@ -520,44 +411,7 @@ export default {
       });
     },
 
-    handleRenamingDepatments() {
-      if (this.$refs.form.validate()) {
-        this.dialogLoading = true;
 
-        this.$http.get("/sanctum/csrf-cookie").then((res) => {
-          this.$http
-            .put("/api/departments/" + this.department_id_to_rename, {
-              name: this.department_rename_name,
-              device_name: "browser",
-            })
-            .then((response) => {
-              console.log(res);
-              this.message = response.data.message;
-              this.dialogLoading = false;
-              this.snackbar = true;
-              this.department_rename_remainder = this.department_name;
-
-              this.addDepartments_visible = false;
-              this.departments_rename_function = false;
-            })
-            .catch((errors) => {
-              this.errors = errors.response.data.errors;
-              this.dialogLoading = false;
-            })
-            .then(() => {
-              this.$http
-                .get("/api/departments")
-                .then((response2) => {
-                  this.department = response2.data;
-                  this.loading_items = false;
-                })
-                .catch((errors) => {
-                  this.errors = errors.response.data.errors;
-                });
-            });
-        });
-      }
-    },
 
     // for adding departments
     handleAddDepatments() {

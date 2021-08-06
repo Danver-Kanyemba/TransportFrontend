@@ -39,23 +39,30 @@
         </v-col>
       </v-row>
 
-      <!-- This is responsible for Changing HOD Deparments-->
-      <div v-if="departments_changing_hod_function">
+
+
+      <!-- This is responsible for Resetting Password-->
+      <div v-if="User_reset_password_function">
         <v-form ref="form" v-model="valid" lazy-validation>
+          <v-row justify="right" class="text-right">
+            <v-col>
+              <v-btn text large @click="User_rename_function = false">
+                <v-icon color="blue">mdi-close</v-icon>Close
+              </v-btn>
+            </v-col>
+          </v-row>
           <v-card-subtitle v-model="user_rename_data"></v-card-subtitle>
           <v-container>
-            <v-select
-              :items="users_data"
-              item-text="name"
-              :menu-props="{ top: true, offsetY: true }"
-              label="Users"
-              item-value="id"
-              v-model="user_id"
-            ></v-select>
+            <v-text-field
+              v-model="user_rename_name"
+              :rules="nameRules"
+              label="Rename User Name"
+              required
+            ></v-text-field>
 
             <v-card-actions>
-              <v-btn color="blue" @click="handleRenamingHOD()">
-                Make HOD Department
+              <v-btn color="blue" @click="handleRenamingDepatments()">
+                Rename User
               </v-btn>
             </v-card-actions>
 
@@ -190,7 +197,7 @@
                         getUsers(item.id)
                     "
                   >
-                    Edit HOD
+                    Reset Password
                     <v-icon color="orange darken-4" right> mdi-account </v-icon>
                   </v-btn>
                 </v-col>

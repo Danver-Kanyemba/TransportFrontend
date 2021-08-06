@@ -106,6 +106,18 @@ const routes = [
     props: true,
   },
   {
+    path: "/DepartmentInformation/:department_id",
+    name: "DepartmentInformation",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(
+        /* webpackChunkName: "TransportForms" */ "../views/DepartmentInformation.vue"
+      ),
+    props: true,
+  },  
+  {
     path: "/DepartmentsList",
     name: "DepartmentsList",
     // route level code-splitting

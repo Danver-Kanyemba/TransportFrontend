@@ -37,13 +37,16 @@ export default {
   data: () => ({
     valid: false,
 
+ 
+
+
     isloading: false,
 
     email: "",
     password: "",
 
     message: "",
-    errors: null,
+    errors: "",
     passwordRules: [
       (v) => !!v || "Password is required",
       (v) => v.length >= 1 || "Password is invalid",
@@ -77,11 +80,4 @@ export default {
   },
 };
 
-// .then((response) => {
-//     localStorage.setItem("token", response.data);
-//     this.message = response.data.message;
-//     this.$router.push("/");c
-//     this.$router.go();
-//     console.log(res);
-// })
 </script>

@@ -23,6 +23,9 @@ export default new Vuex.Store({
     // to view pop up
     isMessageVisible: false,
     message: null,
+
+    // for loading using progress linear
+    dialogLoading: false,
   },
   getters: {
     authenticated(state) {
@@ -39,6 +42,9 @@ export default new Vuex.Store({
     },
     isMessageVisible(state) {
       return state.isMessageVisible;
+    },    
+    dialogLoading(state) {
+      return state.dialogLoading;
     },
   },
   mutations: {
@@ -60,6 +66,9 @@ export default new Vuex.Store({
     setMessage(state, payload) {
       state.message = payload;
     },
+    setDialogLoading(state, payload) {
+      state.dialogLoading = payload;
+    },    
   },
   actions: {
     async signOut({ commit }) {
@@ -71,11 +80,14 @@ export default new Vuex.Store({
       window.sessionStrorage.clear();
     },
 
-    async isMessageVisible({ commit }, payload) {
-      commit("isMessageVisible", true);
-      commit("message", payload);
+    async DialogLoading({ commit }, payload) {
+      commit("setDialogLoading", payload);
+    },    
 
-      window.sessionStrorage.clear();
+    async isMessageVisible({ commit }, payload) {
+      commit("setMessage", payload);
+      commit("setisMessageVisible", true);
+
     },
 
     async signIn({ commit }, payload) {
@@ -97,7 +109,8 @@ export default new Vuex.Store({
           .catch(() => {
             commit("setUser", null);
             commit("setauthenticated", false);
-          });
+          })
+          .then(() => {
 
         axios
           .get("/api/isadmin")
@@ -106,7 +119,7 @@ export default new Vuex.Store({
           })
           .catch(() => {
             commit("setAdmin", false);
-          });
+          })}).then(() => {
 
         axios
           .get("/api/istransportofficer")
@@ -115,7 +128,7 @@ export default new Vuex.Store({
           })
           .catch(() => {
             commit("setTransportOfficer", false);
-          });
+          })});
       } catch (e) {
         throw "User cannot be authenticated";
       }
