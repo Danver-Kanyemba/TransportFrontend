@@ -116,7 +116,31 @@ const routes = [
         /* webpackChunkName: "TransportForms" */ "../views/DepartmentInformation.vue"
       ),
     props: true,
-  },  
+  },
+  {
+    path: "/AdminList",
+    name: "AdminList",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(
+        /* webpackChunkName: "TransportForms" */ "../views/AdminList.vue"
+      ),
+    props: true,
+  }, 
+  {
+    path: "/TransportList",
+    name: "TransportList",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(
+        /* webpackChunkName: "TransportForms" */ "../views/TransportList.vue"
+      ),
+    props: true,
+  },   
   {
     path: "/DepartmentsList",
     name: "DepartmentsList",

@@ -26,7 +26,6 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
-
       <v-divider></v-divider>
 
       <v-list nav dense>
@@ -91,6 +90,18 @@
               </v-list-item-icon>
               <v-list-item-title>Users</v-list-item-title>
             </v-list-item>
+            <v-list-item link to="/Adminlist">
+              <v-list-item-icon>
+                <v-icon>mdi-account</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>Admins</v-list-item-title>
+            </v-list-item>  
+            <v-list-item link to="/TransportList">
+              <v-list-item-icon>
+                <v-icon>mdi-account</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>Transport Officers</v-list-item-title>
+            </v-list-item>                       
           </v-list-group>
         </div>
 
@@ -120,7 +131,7 @@ export default {
       return this.$store.getters.isAdmin;
     },
     isTransportOfficer() {
-      return this.$store.getters.isAdmin;
+      return this.$store.getters.isTransportOfficer;
     },
     logout() {
       // store for signing out

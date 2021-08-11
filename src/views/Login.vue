@@ -37,9 +37,6 @@ export default {
   data: () => ({
     valid: false,
 
- 
-
-
     isloading: false,
 
     email: "",
@@ -79,5 +76,4 @@ export default {
     },
   },
 };
-
 </script>

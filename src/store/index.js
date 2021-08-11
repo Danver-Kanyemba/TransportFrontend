@@ -42,7 +42,7 @@ export default new Vuex.Store({
     },
     isMessageVisible(state) {
       return state.isMessageVisible;
-    },    
+    },
     dialogLoading(state) {
       return state.dialogLoading;
     },
@@ -55,7 +55,7 @@ export default new Vuex.Store({
       state.isAdmin = payload;
     },
     setTransportOfficer(state, payload) {
-      state.isAdmin = payload;
+      state.isTransportOfficer = payload;
     },
     setauthenticated(state, payload) {
       state.authenticated = payload;
@@ -68,7 +68,7 @@ export default new Vuex.Store({
     },
     setDialogLoading(state, payload) {
       state.dialogLoading = payload;
-    },    
+    },
   },
   actions: {
     async signOut({ commit }) {
@@ -82,12 +82,11 @@ export default new Vuex.Store({
 
     async DialogLoading({ commit }, payload) {
       commit("setDialogLoading", payload);
-    },    
+    },
 
     async isMessageVisible({ commit }, payload) {
       commit("setMessage", payload);
       commit("setisMessageVisible", true);
-
     },
 
     async signIn({ commit }, payload) {
@@ -111,24 +110,25 @@ export default new Vuex.Store({
             commit("setauthenticated", false);
           })
           .then(() => {
-
-        axios
-          .get("/api/isadmin")
-          .then((res1) => {
-            commit("setAdmin", res1.data.isAdmin);
+            axios
+              .get("/api/isadmin")
+              .then((res1) => {
+                commit("setAdmin", res1.data.isAdmin);
+              })
+              .catch(() => {
+                commit("setAdmin", false);
+              });
           })
-          .catch(() => {
-            commit("setAdmin", false);
-          })}).then(() => {
-
-        axios
-          .get("/api/istransportofficer")
-          .then((res2) => {
-            commit("setTransportOfficer", res2.data.isTransportOfficer);
-          })
-          .catch(() => {
-            commit("setTransportOfficer", false);
-          })});
+          .then(() => {
+            axios
+              .get("/api/istransportofficer")
+              .then((res2) => {
+                commit("setTransportOfficer", res2.data.isTransportOfficer);
+              })
+              .catch(() => {
+                commit("setTransportOfficer", false);
+              });
+          });
       } catch (e) {
         throw "User cannot be authenticated";
       }

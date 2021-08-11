@@ -1,9 +1,9 @@
 <template>
   <div>
     <v-card class="mx-auto" max-width="750">
-      <v-btn icon large to="/Admin">
+      <!-- <v-btn icon large to="/Admin">
         <v-icon color="blue"> mdi-arrow-left </v-icon>
-      </v-btn>
+      </v-btn> -->
       <!-- for displaying the view of the Department -->
       <v-row justify="space-around">
         <v-col cols="auto">
@@ -43,41 +43,6 @@
         </v-col>
       </v-row>
 
-      <!-- This is responsible for Changing HOD Deparments-->
-      <div v-if="departments_changing_hod_function">
-        <v-row justify="right" class="text-right">
-          <v-col>
-            <v-btn
-              text
-              large
-              @click="departments_changing_hod_function = false"
-            >
-              <v-icon color="blue">mdi-close</v-icon>Close
-            </v-btn>
-          </v-col>
-        </v-row>
-        <v-form ref="form" v-model="valid" lazy-validation>
-          <v-card-subtitle v-model="department_rename_data"></v-card-subtitle>
-          <v-container>
-            <v-select
-              :items="users_data"
-              item-text="name"
-              :menu-props="{ top: true, offsetY: true }"
-              label="Users"
-              item-value="id"
-              v-model="user_id"
-            ></v-select>
-
-            <v-card-actions>
-              <v-btn color="blue" @click="handleRenamingHOD()">
-                Make HOD Department
-              </v-btn>
-            </v-card-actions>
-
-            <p v-text="errors.department"></p>
-          </v-container>
-        </v-form>
-      </div>
 
 
       <!-- This is responsible for Adding Departments -->
@@ -134,21 +99,18 @@
           <v-btn
             color="white"
             class="text--primary"
+            rounded
             dark
             @click="
               (addDepartments_visible = true), (departments_function = true)
             "
           >
-            <v-icon>mdi-plus</v-icon>Add Department
+            <v-icon>mdi-plus</v-icon>Add
           </v-btn>
         </template>
       </v-card-title>
 
-      <v-card-text class="pt-4">
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quasi nobis a
-        at voluptates culpa optio amet! Inventore deserunt voluptatem maxime a
-        veniam placeat, eos impedit nulla quos? Officiis, aperiam ducimus.
-      </v-card-text>
+
 
       <v-divider></v-divider>
       <div v-if="loading_items">
@@ -161,10 +123,7 @@
         height="300"
       >
         <template v-slot:default="{ item }">
-          <v-list-item 
-                :to="/DepartmentInformation/ + item.id"
-          
-          >
+          <v-list-item :to="/DepartmentInformation/ + item.id">
             <v-list-item-content>
               <v-list-item-title>{{ item.department_name }}</v-list-item-title>
             </v-list-item-content>
@@ -172,24 +131,10 @@
             <v-list-item-action>
               <v-row>
                 <v-col>
-                  <v-btn
-                    depressed
-                    small
-                    @click="
-                      (departments_rename_function = true),
-                        (departments_function = false),
-                        get_depertment_id(item.id),
-                        (department_rename_name_2 = item.item),
-                        (departments_changing_hod_function = false)
-                    "
-                  >
-                    Rename
-
-                    <v-icon color="orange darken-4" right> mdi-pen </v-icon>
-                  </v-btn>
+                  
                 </v-col>
                 <v-col>
-                  <v-btn
+                  <!-- <v-btn
                     depressed
                     small
                     @click="
@@ -201,13 +146,10 @@
                   >
                     Edit HOD
                     <v-icon color="orange darken-4" right> mdi-account </v-icon>
-                  </v-btn>
+                  </v-btn> -->
                 </v-col>
-                <v-col>
-                </v-col>
-                <v-col>
-
-                </v-col>
+                <v-col> </v-col>
+                <v-col> </v-col>
               </v-row>
             </v-list-item-action>
           </v-list-item>
@@ -273,7 +215,6 @@ export default {
     dialog_for_department_view: false,
 
     // for selecting users for HOD
-    users_data: [],
 
     departments_changing_hod_function: false,
     user_id: "",
@@ -333,65 +274,9 @@ export default {
       this.$refs.form.validate();
     },
 
+ 
 
 
-    // for retrieving users
-    getUsers(idForHOD) {
-      this.department_id_to_make_hod = idForHOD;
-      this.$http.get("/sanctum/csrf-cookie").then((res) => {
-        this.$http
-          .get("/api/user")
-          .then((response) => {
-            this.users_data = response.data;
-            this.loading_items = false;
-            console.log(res);
-          })
-          .catch((errors) => {
-            this.errors = errors.response.data.errors;
-          });
-      });
-    },
-
-    // for setting the HOD
-    handleRenamingHOD() {
-      if (this.$refs.form.validate()) {
-        this.dialogLoading = true;
-
-        this.$http.get("/sanctum/csrf-cookie").then((res) => {
-          this.$http
-            .put("/api/departments/" + this.department_id_to_make_hod, {
-              name: "admin_update_HOD",
-              hod: this.user_id,
-              device_name: "browser",
-            })
-            .then((response) => {
-              console.log(res);
-              this.message = response.data.message;
-              this.dialogLoading = false;
-              this.snackbar = true;
-              this.department_rename_remainder = this.department_name;
-
-              this.addDepartments_visible = false;
-              this.departments_rename_function = false;
-              this.departments_changing_hod_function = false;
-            })
-            .catch((errors) => {
-              this.errors = errors.response.data.errors;
-            })
-            .then(() => {
-              this.$http
-                .get("/api/departments")
-                .then((response2) => {
-                  this.department = response2.data;
-                  this.loading_items = false;
-                })
-                .catch((errors) => {
-                  this.errors = errors.response.data.errors;
-                });
-            });
-        });
-      }
-    },
 
     // for renaming departments
 
@@ -410,8 +295,6 @@ export default {
           });
       });
     },
-
-
 
     // for adding departments
     handleAddDepatments() {

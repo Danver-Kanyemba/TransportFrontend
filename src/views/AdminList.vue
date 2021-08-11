@@ -1,21 +1,6 @@
 <template>
   <div>
-<!-- for changing Department -->
-    <template>
-      <v-row justify="center">
-        <v-dialog v-model="user_change_dept_dialog" persistent max-width="600px">
-          <v-card>
-            <UserChangeDepartment :selectedID="update_department_id"/>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="user_change_dept_dialog = false">
-                Close
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-row></template
-    >
+
 
     <v-card class="mx-auto" max-width="750">
       <!-- <v-btn icon large to="/Admin">
@@ -56,109 +41,19 @@
         </v-col>
       </v-row>
 
-      <!-- This is responsible for Resetting Password-->
-      <div v-if="User_reset_password_function">
-        <v-form ref="form" v-model="valid" lazy-validation>
-          <v-row justify="right" class="text-right">
-            <v-col>
-              <v-btn text large @click="User_reset_password_function = false">
-                <v-icon color="blue">mdi-close</v-icon>Close
-              </v-btn>
-            </v-col>
-          </v-row>
-          <v-card-subtitle v-model="user_rename_data"></v-card-subtitle>
-          <v-container>
-            <v-text-field
-              v-model="user_password_reset"
-              :rules="nameRules"
-              label="Type new password"
-              required
-            ></v-text-field>
 
-            <v-card-actions>
-              <v-btn color="blue" @click="handleUserPasswordReset()">
-                Reset Password
-              </v-btn>
-            </v-card-actions>
 
-            <p v-text="errors.department"></p>
-          </v-container>
-        </v-form>
-      </div>
 
-      <!-- This is responsible for Renaming User-->
-      <div v-if="User_rename_function">
-        <v-form ref="form" v-model="valid" lazy-validation>
-          <v-row justify="right" class="text-right">
-            <v-col>
-              <v-btn text large @click="User_rename_function = false">
-                <v-icon color="blue">mdi-close</v-icon>Close
-              </v-btn>
-            </v-col>
-          </v-row>
-          <v-card-subtitle v-model="user_rename_data"></v-card-subtitle>
-          <v-container>
-            <v-text-field
-              v-model="user_rename_name"
-              :rules="nameRules"
-              label="Rename User Name"
-              required
-            ></v-text-field>
 
-            <v-card-actions>
-              <v-btn color="blue" @click="handleRenamingUser(user_id_to_rename)">
-                Rename User
-              </v-btn>
-            </v-card-actions>
-
-            <p v-text="errors.department"></p>
-          </v-container>
-        </v-form>
-      </div>
-
-      <!-- This is responsible for Adding Departments -->
-      <div v-if="users_function">
-        <div v-if="addDepartments_visible">
-          <v-form ref="form" v-model="valid" lazy-validation>
-            <v-container>
-              <v-text-field
-                v-model="user_name"
-                :rules="nameRules"
-                label="Department Name"
-                required
-              ></v-text-field>
-
-              <v-card-actions>
-                <v-btn color="blue" @click="handleAddDepatments">
-                  Add Department
-                </v-btn>
-              </v-card-actions>
-
-              <p v-text="errors.department"></p>
-            </v-container>
-          </v-form>
-        </div>
-
-        <div v-else>
-          <v-list-item three-line>
-            <v-list-item-content>
-              <div class="text-overline mb-4">User Created successfully</div>
-              <v-list-item-title class="text-h5 mb-1">
-                {{ department_remainder }}
-              </v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </div>
-      </div>
     </v-card>
     <v-card class="mx-auto" max-width="750">
       <v-card-title class="white--text blue">
-        User Details
+        Admin User Details
 
         <v-spacer></v-spacer>
 
         <template>
-          <v-btn color="white" rounded class="text--primary" dark to="/register">
+          <v-btn color="white" rounded class="text--primary" dark @click="dialog =true">
             <v-icon>mdi-plus</v-icon>Add
           </v-btn>
         </template>
@@ -180,78 +75,17 @@
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title>{{ item.name }}</v-list-item-title>
-              <v-list-item-title style="color:blue;" 
-                >{{ item.department_name }}
-               <v-btn
-                    icon
-                    
-                    @click="
-                    (update_department_id = item.id)
-                    (user_change_dept_dialog = true),
-                      (User_rename_function = false),
-                        (users_function = false),
-                        get_depertment_id(item.id)
-                    "
-                  >
-                    <v-icon color="orange darken-4" left> mdi-door </v-icon>
-                  </v-btn>
-                </v-list-item-title >
+              <v-list-item-title>{{ item.email }}</v-list-item-title>
             </v-list-item-content>
 
             <v-list-item-action>
               <v-row>
                 <v-col>
-                  <v-btn
-                    depressed
-                    small
-                    @click="
-                    (user_id_to_rename = item.id)
-                      (User_rename_function = true),
-                        (users_function = false),
-                        get_depertment_id(item.id)
-                    "
-                  >
-                    <v-icon color="orange darken-4" left> mdi-pen </v-icon>
-                    Rename
-                  </v-btn>
                 </v-col>
                 <v-col>
-                  <v-btn
-                    depressed
-                    small
-                    @click="
-                    (user_id_to_reset_password = item.id),
-                      (User_reset_password_function = true),
-                        (users_function = false),
-                        getUsers(item.id)
-                    "
-                  >
-                    <v-icon color="orange darken-4" left> mdi-account </v-icon>
-                    Reset Password
-                  </v-btn>
-                </v-col>
-                <v-col>
-                  <!-- <v-btn
-                    depressed
-                    small
-                    @click="
-                      (dialog_for_department_view = true),
-                        (department_id_to_view = item.id),
-                        get_depertment_HOD_view()
-                    "
-                  >
-                    View
-
-                    <v-icon color="orange darken-4" right>
-                      mdi-open-in-new
-                    </v-icon>
-                  </v-btn> -->
-                </v-col>
-                <v-col>
-                  <v-btn depressed small @click="handleUserDelete(item.id)">
+                  <v-btn depressed small @click="handleAdminUser(item.id)">
                     <v-icon color="orange darken-4" left> mdi-delete </v-icon>
-                    Delete
-
+                    Remove user
                   </v-btn>
                 </v-col>
               </v-row>
@@ -264,10 +98,10 @@
       <v-row justify="center">
         <v-dialog v-model="dialog" persistent max-width="600px">
           <v-card>
-            <!-- <AddDepartments /> -->
+            <AddAdminUser />
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="dialog = false">
+              <v-btn color="blue darken-1" text @click="dialog = false, getAdminUsers()">
                 Close
               </v-btn>
             </v-card-actions>
@@ -300,10 +134,9 @@
   </div>
 </template>
 <script>
-import  UserChangeDepartment from "./UserChangeDepartment.vue";
-
+import AddAdminUser from './AddAdminUser.vue'
 export default {
-  name: "DepartmentsList",
+  name: "AdminList",
 
   data: () => ({
     valid: false,
@@ -372,14 +205,14 @@ user_password_reset: null,
     ],
     nameRules: [(v) => !!v || "Name is required"],
   }),
-  components: { UserChangeDepartment },
+  components: { AddAdminUser },
   mounted() {
     this.loading_items = true;
     console.log("component is mounted"),
       this.$http
-        .get("/api/allusers")
+        .get("/api/admincontrol")
         .then((res) => {
-          this.users = res.data;
+          this.users = res.data.data;
           this.loading_items = false;
         })
         .catch((errors) => {
@@ -411,6 +244,19 @@ user_password_reset: null,
           });
       });
     },
+
+
+getAdminUsers(){
+this.$http
+        .get("/api/admincontrol")
+        .then((res) => {
+          this.users = res.data.data;
+          this.loading_items = false;
+        })
+        .catch((errors) => {
+          this.errors = errors.response.data.errors;
+        });
+},
 
     // for retrieving users
     getUsers(idForHOD) {
@@ -471,13 +317,13 @@ user_password_reset: null,
     },
 
     // for deleting Users
-    handleUserDelete(idfordelete) {
+    handleAdminUser(idfordelete) {
       this.dialogLoading = true;
       this.users_id_to_delete = idfordelete;
 
       this.$http.get("/sanctum/csrf-cookie").then((res) => {
         this.$http
-          .delete("/api/allusers/" + this.users_id_to_delete)
+          .delete("/api/admincontrol/" + this.users_id_to_delete)
           .then((response) => {
             console.log(response);
 
@@ -493,9 +339,9 @@ user_password_reset: null,
           })
           .then(() => {
             this.$http
-              .get("/api/allusers")
+              .get("/api/admincontrol")
               .then((response2) => {
-                this.users = response2.data;
+                this.users = response2.data.data;
                 this.loading_items = false;
               })
               .catch((errors) => {
@@ -505,108 +351,6 @@ user_password_reset: null,
       });
     },
 
-    // for renaming users
-
-    get_depertment_id(id) {
-      this.user_id_to_rename = id;
-      this.$http.get("/sanctum/csrf-cookie").then((res) => {
-        this.$http
-          .get("/api/departments/" + this.user_id_to_rename)
-          .then((response3) => {
-            this.user_rename_data = response3.data.name;
-            this.loading_items = false;
-            console.log(res);
-          })
-          .catch((errors) => {
-            this.errors = errors.response.data.errors;
-          });
-      });
-    },
-
-    handleRenamingUser(userReset) {
-      if (this.$refs.form.validate()) {
-        this.dialogLoading = true;
-
-        this.$http.get("/sanctum/csrf-cookie").then((res) => {
-          this.$http
-            .put("/api/munhuwacho/" + userReset, {
-              name: 'user_update_name',
-              rename: this.user_rename_name,
-              
-            })
-            .then((response) => {
-              console.log(res);
-              this.message = response.data.message;
-              this.dialogLoading = false;
-              this.snackbar = true;
-              this.department_rename_remainder = this.user_name;
-
-              this.addDepartments_visible = false;
-              this.User_rename_function = false;
-              this.getUsers();
-            })
-            .catch((errors) => {
-              this.errors = errors.response.data.errors;
-            })
-            .then(() => {
-            this.users = null;
-
- this.$http
-        .get("/api/allusers")
-        .then((res) => {
-          this.users = res.data;
-          this.loading_items = false;
-        })
-        .catch((errors) => {
-          this.errors = errors.response.data.errors;
-        });
-            });
-        });
-      }
-    },
-
-// for resetting password
-    handleUserPasswordReset() {
-      if (this.$refs.form.validate()) {
-        this.dialogLoading = true;
-
-        this.$http.get("/sanctum/csrf-cookie").then((res) => {
-          this.$http
-            .put("/api/munhuwacho/" + this.user_id_to_reset_password, {
-              name: 'user_password_reset',
-              password: this.user_password_reset,
-              
-            })
-            .then((response) => {
-              console.log(res);
-              this.message = response.data.message;
-              this.dialogLoading = false;
-              this.snackbar = true;
-              this.department_rename_remainder = this.user_name;
-
-              this.addDepartments_visible = false;
-              this.User_rename_function = false;
-              this.getUsers();
-            })
-            .catch((errors) => {
-              this.errors = errors.response.data.errors;
-            })
-            .then(() => {
-            this.users = null;
-
- this.$http
-        .get("/api/allusers")
-        .then((res) => {
-          this.users = res.data;
-          this.loading_items = false;
-        })
-        .catch((errors) => {
-          this.errors = errors.response.data.errors;
-        });
-            });
-        });
-      }
-    },
 
 
     // for adding departments
