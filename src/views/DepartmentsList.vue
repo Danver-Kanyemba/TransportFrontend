@@ -43,8 +43,6 @@
         </v-col>
       </v-row>
 
-
-
       <!-- This is responsible for Adding Departments -->
       <div v-if="departments_function">
         <div v-if="addDepartments_visible">
@@ -110,8 +108,6 @@
         </template>
       </v-card-title>
 
-
-
       <v-divider></v-divider>
       <div v-if="loading_items">
         <v-skeleton-loader type="list-item, actions"></v-skeleton-loader>
@@ -130,9 +126,7 @@
 
             <v-list-item-action>
               <v-row>
-                <v-col>
-                  
-                </v-col>
+                <v-col> </v-col>
                 <v-col>
                   <!-- <v-btn
                     depressed
@@ -273,10 +267,6 @@ export default {
     validate() {
       this.$refs.form.validate();
     },
-
- 
-
-
 
     // for renaming departments
 

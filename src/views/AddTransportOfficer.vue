@@ -3,19 +3,17 @@
     <div v-if="addDepartments_visible">
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-container>
-            <v-select
-              :items="users_data"
-              item-text="name"
-              :menu-props="{ top: true, offsetY: true }"
-              label="Users"
-              item-value="id"
-              v-model="user_id"
-            ></v-select>
+          <v-select
+            :items="users_data"
+            item-text="name"
+            :menu-props="{ top: true, offsetY: true }"
+            label="Users"
+            item-value="id"
+            v-model="user_id"
+          ></v-select>
 
           <v-card-actions>
-            <v-btn color="blue" @click="handleAdminUser">
-              Add User
-            </v-btn>
+            <v-btn color="blue" @click="handleAdminUser"> Add User </v-btn>
           </v-card-actions>
 
           <p v-text="errors.department"></p>
@@ -26,7 +24,9 @@
     <div v-else>
       <v-list-item three-line>
         <v-list-item-content>
-          <div class="text-overline mb-4">Transport Officer Added successfully</div>
+          <div class="text-overline mb-4">
+            Transport Officer Added successfully
+          </div>
           <v-list-item-title class="text-h5 mb-1">
             {{ department_remainder }}
           </v-list-item-title>
@@ -73,26 +73,24 @@ export default {
     snackbar: false,
     errors: {},
 
-
     users_data: [],
     user_id: "",
   }),
 
-
-mounted() {
-        this.$http.get("/sanctum/csrf-cookie").then((res) => {
-        this.$http
-          .get("/api/allusers")
-          .then((response) => {
-            this.users_data = response.data;
-            this.loading_items = false;
-            console.log(res);
-          })
-          .catch((errors) => {
-            this.errors = errors.response.data.errors;
-          });
-      });
-},
+  mounted() {
+    this.$http.get("/sanctum/csrf-cookie").then((res) => {
+      this.$http
+        .get("/api/allusers")
+        .then((response) => {
+          this.users_data = response.data;
+          this.loading_items = false;
+          console.log(res);
+        })
+        .catch((errors) => {
+          this.errors = errors.response.data.errors;
+        });
+    });
+  },
 
   methods: {
     validate() {},

@@ -1,14 +1,22 @@
 <template>
   <div>
-<!-- for changing Department -->
+    <!-- for changing Department -->
     <template>
       <v-row justify="center">
-        <v-dialog v-model="user_change_dept_dialog" persistent max-width="600px">
+        <v-dialog
+          v-model="user_change_dept_dialog"
+          persistent
+          max-width="600px"
+        >
           <v-card>
-            <UserChangeDepartment :selectedID="update_department_id"/>
+            <UserChangeDepartment :selectedID="update_department_id" />
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="user_change_dept_dialog = false">
+              <v-btn
+                color="blue darken-1"
+                text
+                @click="user_change_dept_dialog = false"
+              >
                 Close
               </v-btn>
             </v-card-actions>
@@ -106,7 +114,10 @@
             ></v-text-field>
 
             <v-card-actions>
-              <v-btn color="blue" @click="handleRenamingUser(user_id_to_rename)">
+              <v-btn
+                color="blue"
+                @click="handleRenamingUser(user_id_to_rename)"
+              >
                 Rename User
               </v-btn>
             </v-card-actions>
@@ -158,7 +169,13 @@
         <v-spacer></v-spacer>
 
         <template>
-          <v-btn color="white" rounded class="text--primary" dark to="/register">
+          <v-btn
+            color="white"
+            rounded
+            class="text--primary"
+            dark
+            to="/register"
+          >
             <v-icon>mdi-plus</v-icon>Add
           </v-btn>
         </template>
@@ -180,22 +197,22 @@
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title>{{ item.name }}</v-list-item-title>
-              <v-list-item-title style="color:blue;" 
+              <v-list-item-title style="color: blue"
                 >{{ item.department_name }}
-               <v-btn
-                    icon
-                    
-                    @click="
-                    (update_department_id = item.id)
-                    (user_change_dept_dialog = true),
+                <v-btn
+                  icon
+                  @click="
+                    (update_department_id = item.id)(
+                      (user_change_dept_dialog = true)
+                    ),
                       (User_rename_function = false),
-                        (users_function = false),
-                        get_depertment_id(item.id)
-                    "
-                  >
-                    <v-icon color="orange darken-4" left> mdi-door </v-icon>
-                  </v-btn>
-                </v-list-item-title >
+                      (users_function = false),
+                      get_depertment_id(item.id)
+                  "
+                >
+                  <v-icon color="orange darken-4" left> mdi-door </v-icon>
+                </v-btn>
+              </v-list-item-title>
             </v-list-item-content>
 
             <v-list-item-action>
@@ -205,8 +222,9 @@
                     depressed
                     small
                     @click="
-                    (user_id_to_rename = item.id)
-                      (User_rename_function = true),
+                      (user_id_to_rename = item.id)(
+                        (User_rename_function = true)
+                      ),
                         (users_function = false),
                         get_depertment_id(item.id)
                     "
@@ -220,8 +238,8 @@
                     depressed
                     small
                     @click="
-                    (user_id_to_reset_password = item.id),
-                      (User_reset_password_function = true),
+                      (user_id_to_reset_password = item.id),
+                        (User_reset_password_function = true),
                         (users_function = false),
                         getUsers(item.id)
                     "
@@ -251,7 +269,6 @@
                   <v-btn depressed small @click="handleUserDelete(item.id)">
                     <v-icon color="orange darken-4" left> mdi-delete </v-icon>
                     Delete
-
                   </v-btn>
                 </v-col>
               </v-row>
@@ -300,7 +317,7 @@
   </div>
 </template>
 <script>
-import  UserChangeDepartment from "./UserChangeDepartment.vue";
+import UserChangeDepartment from "./UserChangeDepartment.vue";
 
 export default {
   name: "DepartmentsList",
@@ -308,12 +325,12 @@ export default {
   data: () => ({
     valid: false,
 
-// for changing the Department
-user_change_dept_dialog: false,
-update_department_id: "",
-// for ressetting password
-user_id_to_reset_password: null,
-user_password_reset: null,
+    // for changing the Department
+    user_change_dept_dialog: false,
+    update_department_id: "",
+    // for ressetting password
+    user_id_to_reset_password: null,
+    user_password_reset: null,
 
     // for viewing users
     users: null,
@@ -530,9 +547,8 @@ user_password_reset: null,
         this.$http.get("/sanctum/csrf-cookie").then((res) => {
           this.$http
             .put("/api/munhuwacho/" + userReset, {
-              name: 'user_update_name',
+              name: "user_update_name",
               rename: this.user_rename_name,
-              
             })
             .then((response) => {
               console.log(res);
@@ -549,23 +565,23 @@ user_password_reset: null,
               this.errors = errors.response.data.errors;
             })
             .then(() => {
-            this.users = null;
+              this.users = null;
 
- this.$http
-        .get("/api/allusers")
-        .then((res) => {
-          this.users = res.data;
-          this.loading_items = false;
-        })
-        .catch((errors) => {
-          this.errors = errors.response.data.errors;
-        });
+              this.$http
+                .get("/api/allusers")
+                .then((res) => {
+                  this.users = res.data;
+                  this.loading_items = false;
+                })
+                .catch((errors) => {
+                  this.errors = errors.response.data.errors;
+                });
             });
         });
       }
     },
 
-// for resetting password
+    // for resetting password
     handleUserPasswordReset() {
       if (this.$refs.form.validate()) {
         this.dialogLoading = true;
@@ -573,9 +589,8 @@ user_password_reset: null,
         this.$http.get("/sanctum/csrf-cookie").then((res) => {
           this.$http
             .put("/api/munhuwacho/" + this.user_id_to_reset_password, {
-              name: 'user_password_reset',
+              name: "user_password_reset",
               password: this.user_password_reset,
-              
             })
             .then((response) => {
               console.log(res);
@@ -592,22 +607,21 @@ user_password_reset: null,
               this.errors = errors.response.data.errors;
             })
             .then(() => {
-            this.users = null;
+              this.users = null;
 
- this.$http
-        .get("/api/allusers")
-        .then((res) => {
-          this.users = res.data;
-          this.loading_items = false;
-        })
-        .catch((errors) => {
-          this.errors = errors.response.data.errors;
-        });
+              this.$http
+                .get("/api/allusers")
+                .then((res) => {
+                  this.users = res.data;
+                  this.loading_items = false;
+                })
+                .catch((errors) => {
+                  this.errors = errors.response.data.errors;
+                });
             });
         });
       }
     },
-
 
     // for adding departments
     handleAddDepatments() {

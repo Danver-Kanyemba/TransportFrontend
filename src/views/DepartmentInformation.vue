@@ -1,33 +1,26 @@
 <template>
   <div>
+    <!-- this is for Changing the HOD -->
+    <v-row justify="center">
+      <v-dialog v-model="dialog" persistent max-width="600px">
+        <v-card>
+          <DepartmentChangeHOD :selectedID="department_id" />
 
-<!-- this is for Changing the HOD -->
-  <v-row justify="center">
+          <v-card-actions>
+            <v-spacer></v-spacer>
 
-    <v-dialog
-      v-model="dialog"
-      persistent
-      max-width="600px"
-    >
-    <v-card>
-      
-<DepartmentChangeHOD :selectedID="department_id" />
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-
-          <v-btn
-            color="blue darken-1"
-            text
-:to="/DepartmentInformation/ + this.department_id"
-            @click="dialog = false"
-          >
-            Close
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </v-row>
+            <v-btn
+              color="blue darken-1"
+              text
+              :to="/DepartmentInformation/ + this.department_id"
+              @click="dialog = false"
+            >
+              Close
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-row>
     <v-row>
       <v-col>
         <v-card class="mx-auto" max-width="750">
@@ -96,9 +89,7 @@
                 HOD: {{ department_name_view }}
               </div>
               <div v-else>Department has no HOD</div>
-              <v-btn @click="dialog = true" >
-                Change HOD
-              </v-btn>
+              <v-btn @click="dialog = true"> Change HOD </v-btn>
             </v-card-subtitle>
             <v-card-text>
               Created at: {{ department_created_at_view }}
@@ -116,16 +107,15 @@ import DepartmentChangeHOD from "./DepartmentChangeHOD.vue";
 export default {
   name: "DepartmentInformation",
 
-components:{
-  DepartmentChangeHOD,
-},
+  components: {
+    DepartmentChangeHOD,
+  },
 
   data: () => ({
     valid: false,
     loading_items: true,
-// for opening modal
-  dialog: false,
-
+    // for opening modal
+    dialog: false,
 
     // department data
     department_data: null,

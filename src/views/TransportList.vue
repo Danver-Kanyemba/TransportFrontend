@@ -1,7 +1,5 @@
 <template>
   <div>
-
-
     <v-card class="mx-auto" max-width="750">
       <!-- <v-btn icon large to="/Admin">
         <v-icon color="blue"> mdi-arrow-left </v-icon>
@@ -40,11 +38,6 @@
           </v-dialog>
         </v-col>
       </v-row>
-
-
-
-
-
     </v-card>
     <v-card class="mx-auto" max-width="750">
       <v-card-title class="white--text blue">
@@ -53,7 +46,13 @@
         <v-spacer></v-spacer>
 
         <template>
-          <v-btn color="white" rounded class="text--primary" dark @click="dialog =true">
+          <v-btn
+            color="white"
+            rounded
+            class="text--primary"
+            dark
+            @click="dialog = true"
+          >
             <v-icon>mdi-plus</v-icon>Add
           </v-btn>
         </template>
@@ -80,8 +79,7 @@
 
             <v-list-item-action>
               <v-row>
-                <v-col>
-                </v-col>
+                <v-col> </v-col>
                 <v-col>
                   <v-btn depressed small @click="handleAdminUser(item.id)">
                     <v-icon color="orange darken-4" left> mdi-delete </v-icon>
@@ -101,7 +99,11 @@
             <AddTransportOfficer />
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="dialog = false, getAdminUsers()">
+              <v-btn
+                color="blue darken-1"
+                text
+                @click="(dialog = false), getAdminUsers()"
+              >
                 Close
               </v-btn>
             </v-card-actions>
@@ -134,19 +136,19 @@
   </div>
 </template>
 <script>
-import AddTransportOfficer from './AddTransportOfficer.vue'
+import AddTransportOfficer from "./AddTransportOfficer.vue";
 export default {
   name: "TransportList",
 
   data: () => ({
     valid: false,
 
-// for changing the Department
-user_change_dept_dialog: false,
-update_department_id: "",
-// for ressetting password
-user_id_to_reset_password: null,
-user_password_reset: null,
+    // for changing the Department
+    user_change_dept_dialog: false,
+    update_department_id: "",
+    // for ressetting password
+    user_id_to_reset_password: null,
+    user_password_reset: null,
 
     // for viewing users
     users: null,
@@ -245,9 +247,8 @@ user_password_reset: null,
       });
     },
 
-
-getAdminUsers(){
-this.$http
+    getAdminUsers() {
+      this.$http
         .get("/api/officercontrol")
         .then((res) => {
           this.users = res.data.data;
@@ -256,7 +257,7 @@ this.$http
         .catch((errors) => {
           this.errors = errors.response.data.errors;
         });
-},
+    },
 
     // for retrieving users
     getUsers(idForHOD) {
@@ -350,8 +351,6 @@ this.$http
           });
       });
     },
-
-
 
     // for adding departments
     handleAddDepatments() {

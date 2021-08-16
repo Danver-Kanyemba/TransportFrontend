@@ -95,13 +95,13 @@
                 <v-icon>mdi-account</v-icon>
               </v-list-item-icon>
               <v-list-item-title>Admins</v-list-item-title>
-            </v-list-item>  
+            </v-list-item>
             <v-list-item link to="/TransportList">
               <v-list-item-icon>
                 <v-icon>mdi-account</v-icon>
               </v-list-item-icon>
               <v-list-item-title>Transport Officers</v-list-item-title>
-            </v-list-item>                       
+            </v-list-item>
           </v-list-group>
         </div>
 
