@@ -7,7 +7,7 @@ import axios from "axios";
 import vuex from "vuex";
 
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = "http://job.danversoft.co.zw/public";
+axios.defaults.baseURL = "http://api.larawithsanctum.test/";
 
 Vue.config.productionTip = false;
 Vue.prototype.$http = axios;
