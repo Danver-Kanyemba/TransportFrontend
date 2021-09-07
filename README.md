@@ -19,6 +19,6 @@ npm run build
 ```
 npm run lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### modify the axios http requests
+```
+you may  modify the url to point to your own specific or custom url in the main.js file
