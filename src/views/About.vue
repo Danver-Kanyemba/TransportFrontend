@@ -1,4 +1,8 @@
 <template>
+  <!-- this is for desplaying the username 
+not that important but for testing
+-->
+
   <div class="about">
     <h1>This is an about {{ user }}</h1>
     <v-snackbar v-model="snackbar" :timeout="timeout">
