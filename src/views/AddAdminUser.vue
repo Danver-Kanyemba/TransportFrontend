@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- for displaying form for adding departments -->
     <div v-if="addDepartments_visible">
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-container>
@@ -13,14 +14,14 @@
           ></v-select>
 
           <v-card-actions>
-            <v-btn color="blue" @click="handleAdminUser"> Add User </v-btn>
+            <v-btn color="blue" @click="handleAdminAddUser"> Add User </v-btn>
           </v-card-actions>
 
           <p v-text="errors.department"></p>
         </v-container>
       </v-form>
     </div>
-
+    <!-- for displaying message when a Department is added successfull -->
     <div v-else>
       <v-list-item three-line>
         <v-list-item-content>
@@ -31,7 +32,7 @@
         </v-list-item-content>
       </v-list-item>
     </div>
-
+    <!-- dialog for adding new user -->
     <v-dialog v-model="dialogLoading" hide-overlay persistent width="300">
       <v-card color="primary" dark>
         <v-card-text>
@@ -60,15 +61,19 @@ export default {
   name: "AddAdminUser",
 
   data: () => ({
+    // for validation
     nameRules: [(v) => !!v || "Name is required"],
     valid: false,
+    // for department name
     department_name: "",
     department_remainder: "",
     addDepartments_visible: true,
     message: "",
+    // for dialog
     timeout: 2000,
     dialogLoading: false,
     snackbar: false,
+    // for errors
     errors: {},
 
     users_data: [],
@@ -76,6 +81,7 @@ export default {
   }),
 
   mounted() {
+    // for getting all users
     this.$http.get("/sanctum/csrf-cookie").then((res) => {
       this.$http
         .get("/api/allusers")
@@ -92,8 +98,8 @@ export default {
 
   methods: {
     validate() {},
-
-    handleAdminUser() {
+    // for adding user
+    handleAdminAddUser() {
       if (this.$refs.form.validate()) {
         this.dialogLoading = true;
 
