@@ -5,6 +5,7 @@ import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex);
 
+// Storing data in the browser of the user
 export default new Vuex.Store({
   plugins: [
     createPersistedState({
@@ -15,9 +16,16 @@ export default new Vuex.Store({
   ],
 
   state: {
+    // is authenticated
     authenticated: false,
+
+    // storing user data
     user: null,
+
+    // state for admin
     isAdmin: false,
+
+    // state for Transort Officer
     isTransportOfficer: false,
 
     // to view pop up
@@ -28,21 +36,27 @@ export default new Vuex.Store({
     dialogLoading: false,
   },
   getters: {
+    // getters for auth
     authenticated(state) {
       return state.authenticated;
     },
+    // getters for user
     user(state) {
       return state.user;
     },
+    // getters for admin
     isAdmin(state) {
       return state.isAdmin;
     },
+    // getters for Tansport Officer
     isTransportOfficer(state) {
       return state.isTransportOfficer;
     },
+    // getters for message
     isMessageVisible(state) {
       return state.isMessageVisible;
     },
+    // getters for dialog
     dialogLoading(state) {
       return state.dialogLoading;
     },
@@ -71,6 +85,7 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    // action for sign out
     async signOut({ commit }) {
       commit("setUser", null);
       commit("setauthenticated", false);
@@ -79,16 +94,16 @@ export default new Vuex.Store({
 
       window.sessionStrorage.clear();
     },
-
+    // action for dialog loading
     async DialogLoading({ commit }, payload) {
       commit("setDialogLoading", payload);
     },
-
+    // action for message
     async isMessageVisible({ commit }, payload) {
       commit("setMessage", payload);
       commit("setisMessageVisible", true);
     },
-
+    // action for signIn
     async signIn({ commit }, payload) {
       try {
         await axios.get("/sanctum/csrf-cookie");
@@ -134,6 +149,7 @@ export default new Vuex.Store({
       }
     },
   },
+  // action for checking if authenticated
   async checkAuthenticated({ commit }) {
     try {
       await axios.get("/sanctum/csrf-cookie");
